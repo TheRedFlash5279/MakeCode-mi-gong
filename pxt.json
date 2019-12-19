@@ -4,7 +4,8 @@
         "device": "*",
         "storyboard": "*",
         "controller": "*",
-        "animation": "*"
+        "animation": "*",
+        "color-coded-tilemap": "*"
     },
     "description": "",
     "files": [

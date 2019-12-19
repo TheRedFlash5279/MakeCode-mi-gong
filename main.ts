@@ -14,15 +14,30 @@ namespace SpriteKind {
     export const Gun = SpriteKind.create()
     export const Enemy_2 = SpriteKind.create()
     export const Enemy_3 = SpriteKind.create()
+    export const LifeBar = SpriteKind.create()
+    export const Boss = SpriteKind.create()
 }
 // Killer
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy_3, function (sprite, otherSprite) {
     Drone_3.destroy(effects.ashes, 500)
     info.changeScoreBy(1)
 })
+function MoveMySpriteInTime (Boss: Sprite, X: string, Y: string, T: string) {
+    GlobalX = X
+    GlobalY = Y
+    dx = 0 - MC.x
+    dy = 0 - MC.y
+    MC.setVelocity(0 / 0, 0 / 0)
+}
+function PreSetBossPostion (X: string, Y: string) {
+    Started = false
+    Ready = false
+    OffSet = 0
+}
 // Monster
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy_2, function (sprite, otherSprite) {
-    info.changeLifeBy(-0.5)
+    info.changeLifeBy(-1)
+    pause(1000)
 })
 controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
     animation.runImageAnimation(
@@ -60,7 +75,7 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
 . . . . . . . . . . . . 6 f 6 6 6 . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . e f e e e . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-`, img`
+`,img`
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
@@ -134,7 +149,7 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
 . . . . . . . . . . . . 6 . . 6 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . e . . e . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-`, img`
+`,img`
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
@@ -174,7 +189,8 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
 })
 // Monster
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy_3, function (sprite, otherSprite) {
-    info.changeLifeBy(-0.5)
+    info.changeLifeBy(-1)
+    pause(1000)
 })
 // Key
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Food_3, function (sprite, otherSprite) {
@@ -258,7 +274,8 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Food_2, function (sprite, otherS
 })
 // Monster
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
-    info.changeLifeBy(-0.5)
+    info.changeLifeBy(-1)
+    pause(1000)
 })
 // Animation
 controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
@@ -297,7 +314,7 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
 . . . . . . . . . . . . 6 6 6 f 6 . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . e e e f e . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-`, img`
+`,img`
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
@@ -376,7 +393,7 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
 . . . . . . . . . . . . 6 . . 6 . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . e . . e . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
-`, img`
+`,img`
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
@@ -420,7 +437,19 @@ sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy_2, function (sprite, o
     info.changeScoreBy(1)
 })
 let Finale_Key: Sprite = null
+let BossCanMove = false
+let MAX = 0
+let LifeBar: Sprite = null
+let LifeBarPic: Image = null
+let Boss: Sprite = null
 let projectile: Sprite = null
+let OffSet = 0
+let Ready = false
+let Started = false
+let dy = 0
+let dx = 0
+let GlobalY = ""
+let GlobalX = ""
 let Gun2: Sprite = null
 let Key_4: Sprite = null
 let Key_3: Sprite = null
@@ -618,38 +647,38 @@ f f b b f f . . f b f 2 f f f f f f f b f . f f f b b b b f f .
 Drone_2.follow(MC)
 Drone_2.setPosition(470, 400)
 Drone_3 = sprites.create(img`
-. . . . . . . . . . . . . . f f f f . . . . . . . . . . . . . . 
-. . . . . . . . . . . . f f d d d f f . . . . . . . . . . . . . 
-. . . . . . . . . . . f f d d d d d d f . . . . . . . . . . . . 
-. . . . . . . . . . . f d d d d d d d f f . . . . . . . . . . . 
-. . . . . . . . . . f f d f f f d d d d f . . . . . . . . . . . 
-. . . . . . . f f 2 f d d f 6 f d d d d f 1 f f . . . . . . . . 
-. . . . . . . 1 f 2 f d d d d d d d 2 f f 1 f 1 . . . . . . . . 
-. . . . . . . 1 f f f 1 f d d d 1 f 2 f f f f 1 . . . . . . . . 
-. . . . . . . . f f f 1 f 1 f f 1 f f f 2 f f . . . . . . . . . 
-. . . . . . . . f 2 f f f 2 f f f f f f 1 f . . . . . . . . . . 
-. . . . . . . . . 1 f f f f f f f 1 f f f . . . . . . . . . . . 
-. . . . . . . . . . f 2 f f 2 f f 2 d d f . . . . . . . . . . . 
-. . . . . . . . . . f 1 f f 1 f d d d f f . . . . . . . . . . . 
-. . . . . . . . . . f f d d d d d d f f . . . . . . . . . . . . 
-. . . . . . . . . . . f f d d d f f f . . . . . . . . . . . . . 
-. . . . . . . . . . . . f f f f f f . . . . . . . . . . . . . . 
-. . . . . . . . . . . . f d d d d f . . . . . . . . . . . . . . 
-. . . . . . . . . . f f d d d d d d f f . . . . . . . . . . . . 
-. . . . . . . . . f d d d d d d d d d d f . . . . . . . . . . . 
-. . . . . . . . . f d d f d d d d f d d f . . . . . . . . . . . 
-. . . . . . . . . f d f f d d d d f f 2 f . . . . . . . . . . . 
-. . . . . . . . . f d f f d d d d f f d f . . . . . . . . . . . 
-. . . . . . . . . f 2 f f d d d d f f 2 2 . . . . . . . . . . . 
-. . . . . . . . . f d 2 f d d d d f 2 d f . . . . . . . . . . . 
-. . . . . . . . . 2 2 f f d d d d f f 2 f . . . . . . . . . . . 
-. . . . . . . . . f f f f d d d d f f f f . . . . . . . . . . . 
-. . . . . . . . . . . . f d d d d f . . . . . . . . . . . . . . 
-. . . . . . . . . . . . f 2 f f d f . . . . . . . . . . . . . . 
-. . . . . . . . . . . . f d 2 f 2 f . . . . . . . . . . . . . . 
-. . . . . . . . . . . . 2 d f f 2 f . . . . . . . . . . . . . . 
-. . . . . . . . . . . . f 2 f f d 2 . . . . . . . . . . . . . . 
-. . . . . . . . . . . . f f f f 2 f . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . f f . . . . . . . . . . 
+. f . . . . . . . . . . . . . . . f f f . . . . . . . . f f f . 
+. f . . . . . . . . f f f f f f f f f f f . . . . . f f . . . . 
+. f . . . . . . f f c c c c c c c c c c c f f . f f . . . . . . 
+. f f . . . . f c c c c c c c c c c c c c c c f f . . . . . . . 
+. . f f . . f c c c c c c c c c c c b c c c c c f . . . . . . . 
+. . . f f f c c c c c c c c c c c c c c c c c c c f . . . . . . 
+. . . . f c c c c c c c c c c c c c c c c c c c c c f . . . . . 
+. . . f c c c b c c c c c c c c c c c c c c c c c c c f . . . . 
+. . . f c c c c c c c c c c c c c c c c c c c c b c c f . . . . 
+. . f c c c c c c c c f f f f f f f c c c c c c c c c c f . . . 
+. . f c c c c c c c c f f f f f f f c c c c c c c c c c f . . . 
+. . f c c c c c c b f f f 6 6 6 f f f c c c c c c c c c f . . . 
+f . f c c c c c c c f f f 6 6 6 f f f c c c c c c c c c f f . . 
+f f f c c c c c c c 2 2 2 2 2 2 2 2 2 c c c c c c c c c f f f . 
+. f f c c c c c c c 2 2 2 2 2 2 2 2 2 c c c b c c c c c f . . f 
+. . f b c c c c c c 2 c c 2 2 2 2 2 2 c c c c c c c c c f . . . 
+. . f c c c c c c c c c 2 c c c 2 2 2 2 c c c c c c c c f . . . 
+. . f c c c c c e c c 2 c c c 2 e 2 2 2 c c c c c c c c f . . . 
+. . f c c c c c e c c c c c e c e e 2 2 c c c c c e c c f . . . 
+. . f c c c f f e c c c c e c c c e f f f f f f e e c c f . . . 
+. . . f c c f e f f f f e c f f f e e 2 b b 2 f e c c f . . . . 
+f f f f c c c e b 2 b f e f f b b 2 e f f f f e e c c f . . . . 
+f . . f f c c e f f f b e 2 2 f f f e e c c f e f c f f . . . . 
+. . . . . f c c c c c f e f f c c c c e c c c e c f . . f . . . 
+. . . . . . f c c c c e c c c c c c c c c c c c f . . . f . . . 
+. . . . . . . f c b c c c c c c c c c b c c c f . . . . . f . . 
+. . . . . f f f f f f f f f f f f f f f f f f . . . . . . f . . 
+. . . . f f . . . . . . . . . . . . . f f . . . . . . . . f . . 
+. . . . f f . . . . . . . . . . . f f . . . . . . . . . . f . . 
+. . . . . . f . . . . . . . . f f f . . . . . . . . . . . f . . 
+. . . . . . f f . . . . . . . f . . . . . . . . . . . . . f . . 
 `, SpriteKind.Enemy_3)
 Drone_3.follow(MC)
 Drone_3.setPosition(150, 400)
@@ -815,6 +844,55 @@ Gun2 = sprites.create(img`
 `, SpriteKind.Gun)
 Gun2.setPosition(325, 500)
 game.onUpdateInterval(500, function () {
+    if (info.score() == 453) {
+        game.showLongText("Stop...ruining...everything!!!!", DialogLayout.Full)
+        MC.setPosition(80, 105)
+        Boss = sprites.create(img`
+. . . . . . . . . . . . . . f f f f . . . . . . . . . . . . . . 
+. . . . . . . . . . . . f f d d d f f . . . . . . . . . . . . . 
+. . . . . . . . . . . f f d d d d d d f . . . . . . . . . . . . 
+. . . . . . . . . . . f d d d d d d d f f . . . . . . . . . . . 
+. . . . . . . . . . f f d f f f d d d d f . . . . . . . . . . . 
+. . . . . . . f f 2 f d d f 6 f d d d d f 1 f f . . . . . . . . 
+. . . . . . . 1 f 2 f d d d d d d d 2 f f 1 f 1 . . . . . . . . 
+. . . . . . . 1 f f f 1 f d d d 1 f 2 f f f f 1 . . . . . . . . 
+. . . . . . . . f f f 1 f 1 f f 1 f f f 2 f f . . . . . . . . . 
+. . . . . . . . f 2 f f f 2 f f f f f f 1 f . . . . . . . . . . 
+. . . . . . . . . 1 f f f f f f f 1 f f f . . . . . . . . . . . 
+. . . . . . . . . . f 2 f f 2 f f 2 d d f . . . . . . . . . . . 
+. . . . . . . . . . f 1 f f 1 f d d d f f . . . . . . . . . . . 
+. . . . . . . . . . f f d d d d d d f f . . . . . . . . . . . . 
+. . . . . . . . . . . f f d d d f f f . . . . . . . . . . . . . 
+. . . . . . . . . . . . f f f f f f . . . . . . . . . . . . . . 
+. . . . . . . . . . . . f d d d d f . . . . . . . . . . . . . . 
+. . . . . . . . . . f f d d d d d d f f . . . . . . . . . . . . 
+. . . . . . . . . f d d d d d d d d d d f . . . . . . . . . . . 
+. . . . . . . . . f d d f d d d d f d d f . . . . . . . . . . . 
+. . . . . . . . . f d f f d d d d f f 2 f . . . . . . . . . . . 
+. . . . . . . . . f d f f d d d d f f d f . . . . . . . . . . . 
+. . . . . . . . . f 2 f f d d d d f f 2 2 . . . . . . . . . . . 
+. . . . . . . . . f d 2 f d d d d f 2 d f . . . . . . . . . . . 
+. . . . . . . . . 2 2 f f d d d d f f 2 f . . . . . . . . . . . 
+. . . . . . . . . f f f f d d d d f f f f . . . . . . . . . . . 
+. . . . . . . . . . . . f d d d d f . . . . . . . . . . . . . . 
+. . . . . . . . . . . . f 2 f f d f . . . . . . . . . . . . . . 
+. . . . . . . . . . . . f d 2 f 2 f . . . . . . . . . . . . . . 
+. . . . . . . . . . . . 2 d f f 2 f . . . . . . . . . . . . . . 
+. . . . . . . . . . . . f 2 f f d 2 . . . . . . . . . . . . . . 
+. . . . . . . . . . . . f f f f 2 f . . . . . . . . . . . . . . 
+`, SpriteKind.Boss)
+        Boss.setPosition(-16, -16)
+        LifeBarPic = image.create(96, 5)
+        LifeBar = sprites.create(LifeBarPic, SpriteKind.LifeBar)
+        LifeBar.setPosition(80, 5)
+        LifeBar.setFlag(SpriteFlag.Ghost, true)
+        OffSet = 0
+        MAX = 10
+        BossCanMove = true
+        PreSetBossPostion("80", "30")
+    }
+})
+game.onUpdateInterval(500, function () {
     if (info.score() == 400) {
         Finale_Key = sprites.create(img`
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
@@ -851,10 +929,5 @@ game.onUpdateInterval(500, function () {
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 `, SpriteKind.Food_5)
         Finale_Key.setPosition(245, 240)
-    }
-})
-game.onUpdateInterval(500, function () {
-    if (info.score() == 453) {
-        game.showLongText("Wha...WHAT! You you freed us... but how, i thought that you were the enemy? O...i know what happend, Lies Lies their all lies, don't listen to them they are......EVIL. You have freed me and my friends souls, i can't thank you enough but i have to go now....BYE!", DialogLayout.Full)
     }
 })
