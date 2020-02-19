@@ -16,24 +16,52 @@ namespace SpriteKind {
     export const Enemy_3 = SpriteKind.create()
     export const LifeBar = SpriteKind.create()
     export const Boss = SpriteKind.create()
+    export const F = SpriteKind.create()
+}
+namespace myTiles {
+    //% blockIdentity=images._tile
+    export const tile2 = img`
+f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f 
+f f f f f f f f f f f f f f f f 
+`
+    //% blockIdentity=images._tile
+    export const tile0 = img`
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+`
 }
 // Killer
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy_3, function (sprite, otherSprite) {
     Drone_3.destroy(effects.ashes, 500)
-    info.changeScoreBy(1)
 })
-function MoveMySpriteInTime (Boss: Sprite, X: string, Y: string, T: string) {
-    GlobalX = X
-    GlobalY = Y
-    dx = 0 - MC.x
-    dy = 0 - MC.y
-    MC.setVelocity(0 / 0, 0 / 0)
-}
-function PreSetBossPostion (X: string, Y: string) {
-    Started = false
-    Ready = false
-    OffSet = 0
-}
 // Monster
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy_2, function (sprite, otherSprite) {
     info.changeLifeBy(-1)
@@ -109,7 +137,7 @@ controller.left.onEvent(ControllerButtonEvent.Pressed, function () {
 . . . . . . . . . . . . e f e e e . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 `],
-    0,
+    100,
     true
     )
 })
@@ -183,7 +211,7 @@ controller.down.onEvent(ControllerButtonEvent.Pressed, function () {
 . . . . . . . . . . . . e . . e . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 `],
-    0,
+    100,
     true
     )
 })
@@ -216,54 +244,11 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Food_4, function (sprite, otherS
 // Killer
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy, function (sprite, otherSprite) {
     Drone.destroy(effects.ashes, 500)
-    info.changeScoreBy(1)
 })
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Gun, function (sprite, otherSprite) {
     music.powerUp.play()
     info.changeScoreBy(50)
     Gun2.destroy(effects.fire, 500)
-    game.showLongText("Remember you only get one shot wait tell their all in one place.", DialogLayout.Full)
-})
-// Gun
-controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    if (info.score() == 450) {
-        projectile = sprites.createProjectileFromSprite(img`
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . 5 4 5 4 2 2 4 4 . . . . . 
-. . . 5 5 4 4 4 4 5 2 . . . . . 
-. . . 5 5 4 4 4 4 4 2 . . . . . 
-. . . 5 5 5 4 4 4 2 2 . . . . . 
-. . . 5 5 5 4 4 4 4 4 . . . . . 
-. . . 5 5 4 4 4 4 4 2 . . . . . 
-. . . 5 5 4 5 4 2 4 4 . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-`, MC, 500, 100)
-        projectile = sprites.createProjectileFromSprite(img`
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . 2 4 2 4 4 5 5 . . . . . . 
-. . . 2 5 4 5 4 2 5 . . . . . . 
-. . . 4 4 4 4 5 5 5 . . . . . . 
-. . . 2 2 4 5 2 4 5 . . . . . . 
-. . . 4 2 4 4 5 4 5 . . . . . . 
-. . . 2 2 4 5 4 5 5 . . . . . . 
-. . . 2 4 2 4 5 2 5 . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-`, MC, -500, 100)
-    }
 })
 // Key
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Food_2, function (sprite, otherSprite) {
@@ -348,7 +333,7 @@ controller.right.onEvent(ControllerButtonEvent.Pressed, function () {
 . . . . . . . . . . . . e e e f e . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 `],
-    0,
+    100,
     true
     )
 })
@@ -427,29 +412,20 @@ controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
 . . . . . . . . . . . . e . . e . . . . . . . . . . . . . . . . 
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 `],
-    0,
+    100,
     true
     )
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.F, function (sprite, otherSprite) {
+    game.showLongText("Ha Ha Ha Ha Ha Ha Ha... see you later.", DialogLayout.Bottom)
+    game.over(false)
 })
 // Killer
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Enemy_2, function (sprite, otherSprite) {
     Drone_2.destroy(effects.ashes, 500)
-    info.changeScoreBy(1)
 })
+let K: Sprite = null
 let Finale_Key: Sprite = null
-let BossCanMove = false
-let MAX = 0
-let LifeBar: Sprite = null
-let LifeBarPic: Image = null
-let Boss: Sprite = null
-let projectile: Sprite = null
-let OffSet = 0
-let Ready = false
-let Started = false
-let dy = 0
-let dx = 0
-let GlobalY = ""
-let GlobalX = ""
 let Gun2: Sprite = null
 let Key_4: Sprite = null
 let Key_3: Sprite = null
@@ -571,7 +547,7 @@ f f f f f f f f f f f f f f f f
 `, false)
 scene.cameraFollowSprite(MC)
 MC.setPosition(245, 240)
-info.setLife(25)
+info.setLife(10)
 MC.setFlag(SpriteFlag.StayInScreen, true)
 // Monster
 Drone = sprites.create(img`
@@ -844,55 +820,6 @@ Gun2 = sprites.create(img`
 `, SpriteKind.Gun)
 Gun2.setPosition(325, 500)
 game.onUpdateInterval(500, function () {
-    if (info.score() == 453) {
-        game.showLongText("Stop...ruining...everything!!!!", DialogLayout.Full)
-        MC.setPosition(80, 105)
-        Boss = sprites.create(img`
-. . . . . . . . . . . . . . f f f f . . . . . . . . . . . . . . 
-. . . . . . . . . . . . f f d d d f f . . . . . . . . . . . . . 
-. . . . . . . . . . . f f d d d d d d f . . . . . . . . . . . . 
-. . . . . . . . . . . f d d d d d d d f f . . . . . . . . . . . 
-. . . . . . . . . . f f d f f f d d d d f . . . . . . . . . . . 
-. . . . . . . f f 2 f d d f 6 f d d d d f 1 f f . . . . . . . . 
-. . . . . . . 1 f 2 f d d d d d d d 2 f f 1 f 1 . . . . . . . . 
-. . . . . . . 1 f f f 1 f d d d 1 f 2 f f f f 1 . . . . . . . . 
-. . . . . . . . f f f 1 f 1 f f 1 f f f 2 f f . . . . . . . . . 
-. . . . . . . . f 2 f f f 2 f f f f f f 1 f . . . . . . . . . . 
-. . . . . . . . . 1 f f f f f f f 1 f f f . . . . . . . . . . . 
-. . . . . . . . . . f 2 f f 2 f f 2 d d f . . . . . . . . . . . 
-. . . . . . . . . . f 1 f f 1 f d d d f f . . . . . . . . . . . 
-. . . . . . . . . . f f d d d d d d f f . . . . . . . . . . . . 
-. . . . . . . . . . . f f d d d f f f . . . . . . . . . . . . . 
-. . . . . . . . . . . . f f f f f f . . . . . . . . . . . . . . 
-. . . . . . . . . . . . f d d d d f . . . . . . . . . . . . . . 
-. . . . . . . . . . f f d d d d d d f f . . . . . . . . . . . . 
-. . . . . . . . . f d d d d d d d d d d f . . . . . . . . . . . 
-. . . . . . . . . f d d f d d d d f d d f . . . . . . . . . . . 
-. . . . . . . . . f d f f d d d d f f 2 f . . . . . . . . . . . 
-. . . . . . . . . f d f f d d d d f f d f . . . . . . . . . . . 
-. . . . . . . . . f 2 f f d d d d f f 2 2 . . . . . . . . . . . 
-. . . . . . . . . f d 2 f d d d d f 2 d f . . . . . . . . . . . 
-. . . . . . . . . 2 2 f f d d d d f f 2 f . . . . . . . . . . . 
-. . . . . . . . . f f f f d d d d f f f f . . . . . . . . . . . 
-. . . . . . . . . . . . f d d d d f . . . . . . . . . . . . . . 
-. . . . . . . . . . . . f 2 f f d f . . . . . . . . . . . . . . 
-. . . . . . . . . . . . f d 2 f 2 f . . . . . . . . . . . . . . 
-. . . . . . . . . . . . 2 d f f 2 f . . . . . . . . . . . . . . 
-. . . . . . . . . . . . f 2 f f d 2 . . . . . . . . . . . . . . 
-. . . . . . . . . . . . f f f f 2 f . . . . . . . . . . . . . . 
-`, SpriteKind.Boss)
-        Boss.setPosition(-16, -16)
-        LifeBarPic = image.create(96, 5)
-        LifeBar = sprites.create(LifeBarPic, SpriteKind.LifeBar)
-        LifeBar.setPosition(80, 5)
-        LifeBar.setFlag(SpriteFlag.Ghost, true)
-        OffSet = 0
-        MAX = 10
-        BossCanMove = true
-        PreSetBossPostion("80", "30")
-    }
-})
-game.onUpdateInterval(500, function () {
     if (info.score() == 400) {
         Finale_Key = sprites.create(img`
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
@@ -929,5 +856,44 @@ game.onUpdateInterval(500, function () {
 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
 `, SpriteKind.Food_5)
         Finale_Key.setPosition(245, 240)
+    }
+})
+game.onUpdateInterval(500, function () {
+    if (info.score() == 450) {
+        K = sprites.create(img`
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . 5 . . . . . . . . . . . . . . . . 
+. . . . . . . . 4 . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . 5 . . . . . . . . 4 . . . . . . . . . . . . 
+. . . . . . . . . . . . f f f . . . . . . . . . . . . . . . . . 
+. . . . . . . . 4 . . f f 4 f f f . . . . . . . . . . . . . . . 
+. . . . . . . . . . f f 4 4 4 4 f f . . . 5 . . . . . . . . . . 
+. . . . . . . . . f f 4 4 f f 4 4 f . . . . . . . . . . . . . . 
+. . . . . 5 . . . f 4 4 4 f f 4 4 f f . . . . . . . . . . . . . 
+. . . . . . . . . f 4 4 4 4 4 4 4 4 f . . . . . . . . . . . . . 
+. . . . . . . . . f f f f 5 5 f f f f . . . . . . . . . . . . . 
+. . 4 . . . . . . . . . f 5 5 f . . . . . . 4 . . . . . . . . . 
+. . . . . . . . . . . . f 5 5 f . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . f 5 5 f . . . . . . . . . . . . . . . . 
+. . . . . . . . . 5 . . f 5 5 f . . . 5 . . . . . . . . . . . . 
+. . . . . . . . . . . . f 5 5 f . . . . . . . . . . . . . . . . 
+. . . . . . 5 . . . . . f 5 5 f . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . f 5 5 f f f . . . . 5 . . . . . . . . . 
+. . . . . . . . . . . . f 5 5 5 5 f . . . . . . . . . . . . . . 
+. . . . . . . . . . . . f 5 5 f f f . 4 . . . . . . . . . . . . 
+. . . . . . . 4 . . . . f 5 5 5 5 f . . . . . . . . . . . . . . 
+. . . . . . . . . . . . f f f f f f . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 
+`, SpriteKind.F)
+        K.setPosition(245, 240)
     }
 })
